@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>코로날씨</title>
+    <link href="https://fonts.googleapis.com/css?family=Crimson Text" rel="stylesheet" type="text/css">
+    <meta name="naver-site-verification" content="2a4ee1d156c2f5d8d118542c802422b9a6b4a197" />
+
+    <link rel="canonical" href="https://start-cv-19-weather.herokuapp.com">
+    <meta name="title" content="코로날씨">
+    <meta name="subject" content="코로나정보와 날씨정보를 한번에 체크하세요!">
+    <meta name="description"
+        content="지역선택 한번으로 코로나정보와 날씨정보를 한번에 알수있고,날씨정보와 코로나정보를 카카오톡으로 공유할수있어서 약속잡을때 편리하다. 또 메모기능을 통해 코로나정보와 날씨정보,그리고 작성한 중요한 메모를 한번에 확인할수있다.">
+    <meta name="keywords"
+        content="코로나,날씨,외출,공유,코로날씨,한번에,메모,서울날씨,서울 코로나,부산날씨,부산 코로나,대구날씨,대구 코로나,인천날씨,인천 코로나,광주날씨,광주 코로나,대전날씨,대전 코로나,울산날씨, 울산 코로나,세종날씨, 세종 코로나,경기날씨, 경기 코로나,강원날씨,강원 코로나,충북날씨,충북 코로나,충남날씨,충남 코로나,전북날씨,전북 코로나,전남날씨,전남 코로나,경북날씨,경북 코로나,경남날씨,경남 코로나,제주날씨,제주 코로나">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="코로날씨">
+    <meta property="og:description"
+        content="지역선택 한번으로 코로나정보와 날씨정보를 한번에 알수있고,날씨정보와 코로나정보를 카카오톡으로 공유할수있어서 약속잡을때 편리하다. 또 메모기능을 통해 코로나정보와 날씨정보,그리고 작성한 중요한 메모를 한번에 확인할수있다.">
+    <meta property="og:url" content="https://start-cv-19-weather.herokuapp.com">
+    <meta name="google-site-verification" content="9In_TOIdV4EyyyweIz9RTedTr1H5GN01Ab-cGmkvirw" />
+</head>
+<style>
+    #title {
+        text-align: center;
+        margin-top: 8%;
+        font-size: 50px;
+        background-color: #666666;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: rgba(255, 255, 255, 0.5) 0px 3px 3px;
+        /*12 Fun CSS Text Shadows You Can Copy and Paste | Design Shack. (2016). Designshack.net. Retrieved 17 March 2016, from https://designshack.net/articles/css/12-fun-css-text-shadows-you-can-copy-and-paste/*/
+    }
+
+    .btn {
+        background: #ffffff;
+        background-image: -webkit-linear-gradient(top, #ffffff, #8b8f91);
+        background-image: -moz-linear-gradient(top, #ffffff, #8b8f91);
+        background-image: -ms-linear-gradient(top, #ffffff, #8b8f91);
+        background-image: -o-linear-gradient(top, #ffffff, #8b8f91);
+        background-image: linear-gradient(to bottom, #ffffff, #8b8f91);
+        -webkit-border-radius: 28;
+        -moz-border-radius: 28;
+        border-radius: 28px;
+        -webkit-box-shadow: 0px 1px 3px #666666;
+        -moz-box-shadow: 0px 1px 3px #666666;
+        box-shadow: 0px 1px 3px #666666;
+        color: #050505;
+        padding: 10px 20px 10px 20px;
+        text-decoration: none;
+
+        /*CSS Button Generator. (2016). Css3buttongenerator.com. Retrieved 17 March 2016, from http://css3buttongenerator.com/*/
+    }
+
+    .btn:hover {
+        background: #dcdfe0;
+        background-image: -webkit-linear-gradient(top, #dcdfe0, #393a3b);
+        background-image: -moz-linear-gradient(top, #dcdfe0, #393a3b);
+        background-image: -ms-linear-gradient(top, #dcdfe0, #393a3b);
+        background-image: -o-linear-gradient(top, #dcdfe0, #393a3b);
+        background-image: linear-gradient(to bottom, #dcdfe0, #393a3b);
+        text-decoration: none;
+
+    }
+
+    .data_share {
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+
+    .manual {
+        text-align: center;
+
+        font-size: 20px;
+        background-color: #666666;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: rgba(255, 255, 255, 0.5) 0px 3px 3px;
+
+    }
+
+    #producer {
+        text-align: right;
+        margin-top: 6%;
+        margin-right: 5%;
+    }
+
+    .ad1 {
+        width: 320px;
+        margin: 0 auto;
+    }
+
+    .ad2 {
+        width: 300px;
+        margin: 0 auto;
+    }
+</style>
+
+<body>
+    <section>
+        <span>기념일과 D-day 계산하기 -></span>
+        <a href="https://anniversary-start.herokuapp.com" target="_blank">기념일 계산</a>
+    </section>
+    <section id="producer">
+        <span>제작자 :</span>
+        <a href="https://blog.naver.com/rladbtjq18" target="_blank">시작의 블로그</a>
+    </section>
+    <h1 id="title">코로날씨</h1>
+    <p class="manual">
+
+        각각의 사용자들이 개인의 메모기능을 이용하기위해서는 로그인이 필요합니다.<br>
+        가입이 되어있다면 로그인 버튼을 눌러주시고, 가입이 되어있지않다면 회원가입 버튼을 누러주세요.<br>
+    </p>
+    <div class="data_share">
+        <a href="{{url_for('login')}}"><input type="button" id="random" class="btn center-block" style="font-size: 16px"
+                value="로그인"></a>
+        <a href="{{url_for('join')}}"><input type="button" id="random" class="btn center-block" style="font-size: 16px"
+                value="회원가입"></a>
+    </div>
+
+
+    <div class="ad1">
+
+        <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-EQCzzbaXLddYHYgn" data-ad-width="320"
+            data-ad-height="100"></ins>
+        <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    </div>
+
+
+    <div class="ad1">
+
+        <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-89SrF01E2ZEg61k9" data-ad-width="320"
+            data-ad-height="100"></ins>
+        <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    </div>
+    <div class="ad1">
+        <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-hWaaIrzBQJqzZUKt" data-ad-width="320"
+            data-ad-height="100"></ins>
+        <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    </div>
+    <div class="ad2">
+
+        <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-sWYoYeb43pkQhL4O" data-ad-width="300"
+            data-ad-height="250"></ins>
+        <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    </div>
+
+</body>
+<!-- Copyright (c) 2021 by Sayuri Hayakawa (https://codepen.io/sayusama/pen/eZBMeP)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+
+</html>

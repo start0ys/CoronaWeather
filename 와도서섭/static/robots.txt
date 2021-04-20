@@ -1,0 +1,3 @@
+User-agent: *
+Allow:/
+Sitemap:https://start-cv-19-weather.herokuapp.com/sitemap.xml

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코로날씨</title>
+  <script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Crimson Text" rel="stylesheet" type="text/css">
+  <meta name="naver-site-verification" content="2a4ee1d156c2f5d8d118542c802422b9a6b4a197" />
+
+  <link rel="canonical" href="https://start-cv-19-weather.herokuapp.com">
+  <meta name="title" content="코로날씨">
+  <meta name="subject" content="코로나정보와 날씨정보를 한번에 체크하세요!">
+  <meta name="description"
+    content="지역선택 한번으로 코로나정보와 날씨정보를 한번에 알수있고,날씨정보와 코로나정보를 카카오톡으로 공유할수있어서 약속잡을때 편리하다. 또 메모기능을 통해 코로나정보와 날씨정보,그리고 작성한 중요한 메모를 한번에 확인할수있다.">
+  <meta name="keywords"
+    content="코로나,날씨,외출,공유,코로날씨,한번에,메모,서울날씨,서울 코로나,부산날씨,부산 코로나,대구날씨,대구 코로나,인천날씨,인천 코로나,광주날씨,광주 코로나,대전날씨,대전 코로나,울산날씨, 울산 코로나,세종날씨, 세종 코로나,경기날씨, 경기 코로나,강원날씨,강원 코로나,충북날씨,충북 코로나,충남날씨,충남 코로나,전북날씨,전북 코로나,전남날씨,전남 코로나,경북날씨,경북 코로나,경남날씨,경남 코로나,제주날씨,제주 코로나">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="코로날씨">
+  <meta property="og:description"
+    content="지역선택 한번으로 코로나정보와 날씨정보를 한번에 알수있고,날씨정보와 코로나정보를 카카오톡으로 공유할수있어서 약속잡을때 편리하다. 또 메모기능을 통해 코로나정보와 날씨정보,그리고 작성한 중요한 메모를 한번에 확인할수있다.">
+  <meta property="og:url" content="https://start-cv-19-weather.herokuapp.com">
+  <meta name="google-site-verification" content="9In_TOIdV4EyyyweIz9RTedTr1H5GN01Ab-cGmkvirw" />
+</head>
+<style>
+  a:hover {
+    text-decoration: none;
+  }
+
+  a:active {
+    text-decoration: none;
+  }
+
+
+  #title {
+    margin-top: 8%;
+    font-size: 50px;
+    background-color: #666666;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: rgba(255, 255, 255, 0.5) 0px 3px 3px;
+    /*12 Fun CSS Text Shadows You Can Copy and Paste | Design Shack. (2016). Designshack.net. Retrieved 17 March 2016, from https://designshack.net/articles/css/12-fun-css-text-shadows-you-can-copy-and-paste/*/
+  }
+
+  #searchInput {
+    margin-top: 2%;
+    background: #333;
+    color: #ccc;
+    width: 160px;
+    padding: 6px 15px 6px 35px;
+    border-radius: 20px;
+    box-shadow: 0 1px 0 #ccc inset;
+    transition: 500ms all ease;
+    outline: 0;
+
+    /*CSS Textbox Style. (2016). Html. Retrieved 17 March 2016, from https://html-generator.weebly.com/css-textbox-style.html*/
+  }
+
+  #searchInput:hover {
+    width: 200px;
+  }
+
+
+  .outputClass {
+    background-color: black;
+    border: 2px black solid;
+    padding: 5px;
+    margin: 2%;
+    color: white;
+    box-shadow: 10px 10px 5px #888888;
+    font-size: 18px;
+  }
+
+  #item:hover {
+    box-shadow: none;
+  }
+
+  #titleSearch {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .btn {
+    background: #ffffff;
+    background-image: -webkit-linear-gradient(top, #ffffff, #8b8f91);
+    background-image: -moz-linear-gradient(top, #ffffff, #8b8f91);
+    background-image: -ms-linear-gradient(top, #ffffff, #8b8f91);
+    background-image: -o-linear-gradient(top, #ffffff, #8b8f91);
+    background-image: linear-gradient(to bottom, #ffffff, #8b8f91);
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    -moz-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 0px 1px 3px #666666;
+    color: #050505;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+
+    /*CSS Button Generator. (2016). Css3buttongenerator.com. Retrieved 17 March 2016, from http://css3buttongenerator.com/*/
+  }
+
+  .btn:hover {
+    background: #dcdfe0;
+    background-image: -webkit-linear-gradient(top, #dcdfe0, #393a3b);
+    background-image: -moz-linear-gradient(top, #dcdfe0, #393a3b);
+    background-image: -ms-linear-gradient(top, #dcdfe0, #393a3b);
+    background-image: -o-linear-gradient(top, #dcdfe0, #393a3b);
+    background-image: linear-gradient(to bottom, #dcdfe0, #393a3b);
+    text-decoration: none;
+
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  .city_lst {
+    text-align: center;
+  }
+
+  .cv_sum {
+    text-align: center;
+    margin-top: 15px;
+
+  }
+
+  .cv_city {
+    text-align: center;
+
+
+
+  }
+
+  #result {
+    color: blue;
+  }
+
+  #add_cv_sum {
+    color: red;
+  }
+
+  #add_cv_city {
+    color: red;
+  }
+
+  .weather {
+    text-align: center;
+  }
+
+  .data_share {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .data_share1 {
+    text-align: center;
+    margin-top: 52px;
+
+  }
+
+  #producer {
+    text-align: right;
+    margin-top: 6%;
+    margin-right: 5%;
+  }
+
+  .local_select {
+    font-size: 31px;
+  }
+
+
+  h4 {
+    cursor: pointer !important;
+  }
+
+  .slide-card {
+    border: 3px solid white;
+    padding: 1em;
+  }
+
+  .animated-slides-cards {
+    background: #dedfe0;
+    padding: 1em;
+    width: 236px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .card-body {
+    opacity: 0;
+    max-height: 0;
+    transition: all 0.75s ease-out;
+  }
+
+  .card-active .card-body {
+    opacity: 1;
+    max-height: 400px;
+  }
+
+
+
+  @media(max-width: 600px) {
+    .local_select {
+      font-size: 23px;
+    }
+
+    #title {
+      margin-top: 8%;
+      font-size: 37px;
+      background-color: #666666;
+      -webkit-background-clip: text;
+      -moz-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: rgba(255, 255, 255, 0.5) 0px 3px 3px;
+      /*12 Fun CSS Text Shadows You Can Copy and Paste | Design Shack. (2016). Designshack.net. Retrieved 17 March 2016, from https://designshack.net/articles/css/12-fun-css-text-shadows-you-can-copy-and-paste/*/
+    }
+
+  }
+
+  .ad1 {
+    width: 320px;
+    margin: 0 auto;
+  }
+
+  .ad2 {
+    width: 300px;
+    margin: 0 auto;
+  }
+
+  p {
+    text-align: center;
+    color: red;
+  }
+
+  #blue_font {
+    color: blue;
+  }
+</style>
+
+<body>
+  <section>
+    <span>기념일과 D-day 계산하기 -></span>
+    <a href="https://anniversary-start.herokuapp.com" target="_blank">기념일 계산</a>
+  </section>
+  <section id="producer">
+    <span>제작자 :</span>
+    <a href="https://blog.naver.com/rladbtjq18" target="_blank">시작의 블로그</a>
+  </section>
+
+  <h1 id="title" class="text-center">코로날씨</h1>
+
+
+  <form action="" class="city_lst">
+    <div>
+
+      <label class="local_select">원하는 지역을 선택해주세요.</label>
+    </div>
+    <select name='keyword' size='1' class="center-block" style="color:white; font-size: 18px" id="searchInput">
+      <option selected>-- 선택 --</option>
+      <option>서울</option>
+      <option>부산</option>
+      <option>대구</option>
+      <option>인천</option>
+      <option>광주</option>
+      <option>대전</option>
+      <option>울산</option>
+      <option>세종</option>
+      <option>경기</option>
+      <option>강원</option>
+      <option>충북</option>
+      <option>충남</option>
+      <option>전북</option>
+      <option>전남</option>
+      <option>경북</option>
+      <option>경남</option>
+      <option>제주</option>
+    </select>
+    <button type="submit" id="random" class="btn center-block" style="font-size: 16px">입력</button>
+  </form>
+
+
+
+  <div class="animated-slides-cards">
+    <div data="0" class="slide-card block-padding margin-bottom-05x card-active">
+      <h4 class="blue">코로나 정보</h4>
+      <div class="grey card-body">
+
+        <div class="cv_sum">
+          {% if data1 %}
+          <div><label for="">기준 날짜:</label>{{data1.stateDt}}</div>
+          <div><label for="">확진자 수:</label>{{data1.decideCnt}}</div>
+          <div><label for="">검사 중:</label>{{data1.examCnt}}</div>
+          <div><label for="">격리 해제:</label>{{data1.clearCnt}}</div>
+          <div><label for="">사망자:</label>{{data1.deathCnt}}</div><br>
+          {% endif %}
+        </div>
+        <div class="cv_city">
+
+          {% if data2 %}
+          {% for a in data2 %}
+
+          <div>
+            {% if a.gubun == "합계" %}
+            <div>지역 전체</div>
+            <div id="add_cv_sum"><label for="">추가 확진자 :</label>{{a.incDec}}</div>
+            <div><label for="">지역발생 :</label>{{a.localOccCnt}}</div>
+            <div><label for="">해외유입 :</label>{{a.overFlowCnt}}</div>
+            <div><label for="">치료중 :</label>{{a.isolIngCnt}}</div><br>
+            {% endif %}
+          </div>
+          <div id="result">
+
+            {% if a.gubun == city %}
+            <div>{{a.gubun}}</div>
+            <div><label for="">총 확진자 :</label>{{a.defCnt}}</div>
+            <div id="add_cv_city"><label for="">추가 확진자 :</label>{{a.incDec}}</div>
+            <div><label for="">지역발생 :</label>{{a.localOccCnt}}</div>
+            <div><label for="">해외유입 :</label>{{a.overFlowCnt}}</div>
+            <div><label for="">치료중 :</label>{{a.isolIngCnt}}</div><br>
+
+            {% endif %}
+          </div>
+
+
+          {% endfor %}
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+    <div data="1" class="slide-card block-padding margin-bottom-05x">
+      <h4 class="blue">날씨 정보</h4>
+      <div class="grey card-body">
+
+        <div class="weather">
+
+
+
+
+          {% if data3 %}
+          <div>
+            {% for b in data3 %}
+            {% if b.category == "PTY" and b.fcstValue == "0"%}
+            <label for=""></label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "PTY" and b.fcstValue == "1"%}
+            <label for="">비가 옵니다.</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "PTY" and b.fcstValue == "2"%}
+            <label for="">비와 눈이 섞여 옵니다.</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "PTY" and b.fcstValue == "3"%}
+            <label for="">눈이 옵니다.</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "PTY" and b.fcstValue == "4"%}
+            <label for="">소나기가 옵니다.</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "PTY" and b.fcstValue == "5"%}
+            <label for="">빗방울이 떨어집니다.</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "PTY" and b.fcstValue == "6"%}
+            <label for="">빗방울과 눈이 날립니다.</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "PTY" and b.fcstValue == "7"%}
+            <label for="">눈이 날립니다.</label>
+            {% break %}
+            {% endif %}
+            {% endfor %}
+          </div>
+
+          <div>
+            {% for b in data3 %}
+            {% if b.category == "SKY" and b.fcstValue == "1"%}
+            <label for="">날씨 상태 : 맑음</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "SKY" and b.fcstValue == "3"%}
+            <label for="">날씨 상태 : 구름많음</label>
+            {% break %}
+            {% endif %}
+
+
+
+            {% if b.category == "SKY" and b.fcstValue == "4"%}
+            <label for="">날씨 상태 : 흐림</label>
+            {% break %}
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% for b in data3 %}
+          {% if b.category == "POP"%}
+          <div><label for="">강수 확률 : </label>{{b.fcstValue}}%</div>
+          {% break %}
+          {% endif %}
+          {% endfor %}
+
+
+          {% for b in data3 %}
+          {% if b.category == "TMX"%}
+          <div><label for="">예상 최고 기온 : </label>{{b.fcstValue}}℃</div>
+          {% break %}
+          {% endif %}
+          {% endfor %}
+
+          {% for b in data3 %}
+          {% if b.category == "TMN"%}
+          <div><label for="">예상 최저 기온 : </label>{{b.fcstValue}}℃</div>
+          {% break %}
+          {% endif %}
+          {% endfor %}
+
+
+          {% endif%}
+
+          {% if data4 %}
+
+          {% for c in data4 %}
+          {% if c.category == "T1H"%}
+          <div><label for="">현재 기온 : </label>{{c.obsrValue}}℃</div>
+          {% endif %}
+          {% endfor %}
+
+          {% for c in data4 %}
+          {% if c.category == "RN1"%}
+          <div><label for="">강수량: </label>{{c.obsrValue}}mm</div>
+          {% endif %}
+          {% endfor %}
+
+
+          {% for c in data4 %}
+          {% if c.category == "REH"%}
+          <div><label for="">습도: </label>{{c.obsrValue}}%</div>
+          {% endif %}
+          {% endfor %}
+
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="data_share1">
+    <input type="button" id="random" class="btn center-block" style="font-size: 16px" onClick="cv_19();"
+      value="코로나 정보 공유" />
+    <input type="button" id="random" class="btn center-block" style="font-size: 16px" onClick="weather();"
+      value="날씨 정보 공유" />
+  </div>
+  <div class="data_share">
+    <a href="{{url_for('memo')}}"><input type="button" id="random" class="btn center-block" style="font-size: 16px"
+        value="메모"></a>
+  </div>
+  <div class="data_share">
+    <a href="https://start-cv-19-weather.herokuapp.com" target="_blank"><input type="button" id="random"
+        class="btn center-block" style="font-size: 16px" value="웹에서 공유하기"></a>
+  </div>
+  <p>
+
+    ⭐앱에서는 정보를 확인하는것 외에는 오류발생이 빈번합니다.⭐<br>⭐메모추가,메모수정,정보공유등의 기능은 <span id="blue_font">웹에서 공유하기</span>을 눌러 웹에서
+    사용하고⭐<br>⭐앱에서는 로그인 후 저장된 메모기능과 코로나정보,날씨정보만 확인하는것을 권장드립니다.⭐<br><br>
+    [주의]<br>
+    1.정보를 가져오는데 시간이 걸릴 수 있습니다.<br>잠시 기다려주세요. <br>
+    2.<span id="blue_font">웹</span>에서도 서버가 불안정하여 오류가 생길 수 있습니다.<br>오류 발생 시 새로 고침 또는 뒤로 갔다가 다시 와주시면 됩니다.<br>
+    3.정보 공유 버튼은 <span id="blue_font">웹</span>에서만 사용이 가능합니다.<br><span id="blue_font">앱</span>에서 사용하시는 분들은 <span
+      id="blue_font">웹에서 공유하기</span> 버튼을 눌러주세요<br>
+    4.웹에서 정보 공유 버튼이 눌리지 않으면 새로 고침 또는 뒤로 갔다가 다시 와주시면 됩니다.<br>
+  </p>
+
+  <div class="ad1">
+
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-EQCzzbaXLddYHYgn" data-ad-width="320"
+      data-ad-height="100"></ins>
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+  </div>
+
+
+  <div class="ad1">
+
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-89SrF01E2ZEg61k9" data-ad-width="320"
+      data-ad-height="100"></ins>
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+  </div>
+  <div class="ad1">
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-hWaaIrzBQJqzZUKt" data-ad-width="320"
+      data-ad-height="100"></ins>
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+  </div>
+  <div class="ad2">
+
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-sWYoYeb43pkQhL4O" data-ad-width="300"
+      data-ad-height="250"></ins>
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+  </div>
+
+
+
+
+  <script>
+    try {
+      function cv_19() {
+        Kakao.init('e19172f855f11b7e072e8a75db28e973')
+        Kakao.Link.sendDefault({
+          objectType: 'feed',
+          content: {
+            title: '{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}\n추가 확진자 :{{a.incDec}}\n치료중 :{{a.isolIngCnt}}\n{% endif %}{% if a.gubun == "합계" %}전체 지역 추가 확진자 :{{a.incDec}}{% endif %}{% endfor %}{% endif %}',
+            description: '',
+            imageUrl: "",
+            link: {
+              mobileWebUrl: 'https://start-cv-19-weather.herokuapp.com/',
+              webUrl: 'https://start-cv-19-weather.herokuapp.com/',
+            },
+          },
+
+          buttons: [
+            {
+              title: '자세히 보기',
+              link: {
+                mobileWebUrl: 'https://start-cv-19-weather.herokuapp.com/',
+                webUrl: 'https://start-cv-19-weather.herokuapp.com/',
+              },
+            },
+
+          ],
+        })
+      }
+
+      function weather() {
+        Kakao.init('e19172f855f11b7e072e8a75db28e973')
+        Kakao.Link.sendDefault({
+          objectType: 'feed',
+          content: {
+            title: '{% if data3 %}{% for b in data3 %}{% if b.category == "SKY" and b.fcstValue == "1"%}{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}{% endif %}{% endfor %}{% endif %} 날씨 상태 : 맑음\n{% break %}{% endif %}{% if b.category == "SKY" and b.fcstValue == "3"%}{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}{% endif %}{% endfor %}{% endif %} 날씨 상태 : 구름많음\n{% break %}{% endif %}{% if b.category == "SKY" and b.fcstValue == "4"%}{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}{% endif %}{% endfor %}{% endif %} 날씨 상태 : 흐림\n{% break %}{% endif %}{% endfor %}{% for b in data3 %}{% if b.category == "POP"%}강수 확률 : {{b.fcstValue}}%\n{% break %}{% endif %}{% endfor %}{% for b in data3 %}{% if b.category == "TMX"%}예상최고기온:{{b.fcstValue}}℃{% break %}{% endif %}{% endfor %}{% for b in data3 %}{% if b.category == "TMN"%} 예상최저기온:{{b.fcstValue}}℃\n{% break %}{% endif %}{% endfor %}{% endif%}{% if data4 %}{% for c in data4 %}{% if c.category == "T1H"%}현재 기온 : {{c.obsrValue}}℃{% endif %}{% endfor %}{% endif %}',
+            description: '',
+            imageUrl: "",
+            link: {
+              mobileWebUrl: 'https://start-cv-19-weather.herokuapp.com/',
+              webUrl: 'https://start-cv-19-weather.herokuapp.com/',
+            },
+          },
+
+          buttons: [
+            {
+              title: '자세히 보기',
+              link: {
+                mobileWebUrl: 'https://start-cv-19-weather.herokuapp.com/',
+                webUrl: 'https://start-cv-19-weather.herokuapp.com/',
+              },
+            },
+
+          ],
+        })
+      }
+
+      ; window.kakaoDemoCallback && window.kakaoDemoCallback()
+    }
+    catch (e) { window.kakaoDemoException && window.kakaoDemoException(e) }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      // main click handler for the whole page
+      document.addEventListener('click', function (event) {
+
+        var clickedElem = event.target;
+
+        if (clickedElem.matches(".slide-card h4")) {
+
+          var activeCards = document.querySelectorAll(".card-active");
+
+          if (activeCards) {
+            for (var i = 0; i < activeCards.length; i++) {
+              if (activeCards[i]) toggle(activeCards[i], "card-active");
+            }
+          }
+
+          toggle(clickedElem.parentNode, "card-active");
+        }
+      });
+    });
+
+
+    function toggle(el, elClass) {
+      if (el.matches("." + elClass)) {
+        el.classList.remove(elClass);
+      } else {
+        el.classList.add(elClass);
+      }
+    }
+  </script>
+
+
+
+</body>
+<!-- Copyright (c) 2021 by 기상청 (https://data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15057682) / CC BY
+
+Copyright (c) 2021 by Sayuri Hayakawa (https://codepen.io/sayusama/pen/eZBMeP)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Copyright (c) 2021 by design.ethics.code (https://codepen.io/benbyford-the-lessful/pen/bJpJoL)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
+
+
+
+</html>

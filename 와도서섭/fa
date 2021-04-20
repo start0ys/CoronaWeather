@@ -1,0 +1,718 @@
+[33mcommit 27b55c2ec67b153ebe1593be5a101a502a2c4e09[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: kimstart <rladbtjq18@naver.com>
+Date:   Tue Feb 9 00:16:45 2021 +0900
+
+    first commit
+
+[1mdiff --git a/Procfile b/Procfile[m
+[1mnew file mode 100644[m
+[1mindex 0000000..18c6de5[m
+[1m--- /dev/null[m
+[1m+++ b/Procfile[m
+[36m@@ -0,0 +1 @@[m
+[32m+[m[32mweb: gunicorn pg:app[m[41m [m
+\ No newline at end of file[m
+[1mdiff --git a/__pycache__/city_cv_19.cpython-39.pyc b/__pycache__/city_cv_19.cpython-39.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e7abffb[m
+Binary files /dev/null and b/__pycache__/city_cv_19.cpython-39.pyc differ
+[1mdiff --git a/__pycache__/cv_19.cpython-39.pyc b/__pycache__/cv_19.cpython-39.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..bdcf2da[m
+Binary files /dev/null and b/__pycache__/cv_19.cpython-39.pyc differ
+[1mdiff --git a/__pycache__/weather.cpython-39.pyc b/__pycache__/weather.cpython-39.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..fe8ba9c[m
+Binary files /dev/null and b/__pycache__/weather.cpython-39.pyc differ
+[1mdiff --git a/__pycache__/weather2.cpython-39.pyc b/__pycache__/weather2.cpython-39.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..87c47b0[m
+Binary files /dev/null and b/__pycache__/weather2.cpython-39.pyc differ
+[1mdiff --git a/city_cv_19.py b/city_cv_19.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..4af582d[m
+[1m--- /dev/null[m
+[1m+++ b/city_cv_19.py[m
+[36m@@ -0,0 +1,23 @@[m
+[32m+[m[32mimport requests ,xmltodict, json[m
+[32m+[m
+[32m+[m[32mdef get_city_cv_19_data(frist_date,last_date):[m
+[32m+[m[32m    url = "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=4GfH2i3tXiTAlgB1urJs7gd3SalAlH0w9dTp3ytpzhhhq8CcaYTF0rMwwVtATbZVLNUw1hLIc1as6IHBPxFvMA%3D%3D&pageNo=1&numOfRows=10&startCreateDt={0}&endCreateDt={1}".format(frist_date,last_date)[m
+[32m+[m
+[32m+[m[32m    res = requests.get(url)[m
+[32m+[m
+[32m+[m[32m    #xml을 dict형태로 변환[m
+[32m+[m[32m    data_change1 = xmltodict.parse(res.text)[m
+[32m+[m[32m    #dict형태를 json형태로 변환[m
+[32m+[m[32m    data_change2 = json.dumps(data_change1)[m
+[32m+[m[32m    # json을 dict 형태로 변환[m
+[32m+[m[32m    data_change3 = json.loads(data_change2)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    totalCount = data_change3["response"]["body"]["totalCount"][m
+[32m+[m[32m    if totalCount == 0:[m
+[32m+[m[32m        return False[m
+[32m+[m
+[32m+[m[32m    cv_19_data =data_change3["response"]["body"]["items"]["item"][m
+[32m+[m
+[32m+[m
+[32m+[m[32m    return cv_19_data[m
+[1mdiff --git a/cv_19.py b/cv_19.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..5712ba1[m
+[1m--- /dev/null[m
+[1m+++ b/cv_19.py[m
+[36m@@ -0,0 +1,35 @@[m
+[32m+[m[32mimport requests ,xmltodict, json[m
+[32m+[m[32m# from pprint import pprint[m
+[32m+[m
+[32m+[m[32m# frist_date = "20200315"[m
+[32m+[m[32m# last_date ="20200315"[m
+[32m+[m[32mdef get_cv_19_data(frist_date,last_date):[m
+[32m+[m[32m    url = "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=4GfH2i3tXiTAlgB1urJs7gd3SalAlH0w9dTp3ytpzhhhq8CcaYTF0rMwwVtATbZVLNUw1hLIc1as6IHBPxFvMA%3D%3D&pageNo=1&numOfRows=10&startCreateDt={0}&endCreateDt={1}".format(frist_date,last_date)[m
+[32m+[m
+[32m+[m[32m    res = requests.get(url)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    #xml을 dict형태로 변환[m
+[32m+[m[32m    data_change1 = xmltodict.parse(res.text)[m
+[32m+[m[32m    #dict형태를 json형태로 변환[m
+[32m+[m[32m    data_change2 = json.dumps(data_change1)[m
+[32m+[m[32m    # json을 dict 형태로 변환[m
+[32m+[m[32m    data_change3 = json.loads(data_change2)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    #type 증명[m
+[32m+[m[32m    # print(type(res.text))[m
+[32m+[m[32m    # print(type(data_change1))[m
+[32m+[m[32m    # print(type(data_change2))[m
+[32m+[m[32m    # print(type(data_change3))[m
+[32m+[m
+[32m+[m[32m    # totalCount가 제대로 데이터가 가져와졌는지 확인[m
+[32m+[m[32m    # totalCount = data_change3["response"]["body"]["totalCount"][m
+[32m+[m[32m    # if totalCount == 0:[m
+[32m+[m[32m    #     return False[m
+[32m+[m
+[32m+[m[32m    cv_19_data =data_change3["response"]["body"]["items"]["item"][m
+[32m+[m
+[32m+[m[32m    # 확인[m
+[32m+[m[32m    # pprint(cv_19_data)[m
+[32m+[m[32m    return cv_19_data[m
+[1mdiff --git a/pg.py b/pg.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..d097278[m
+[1m--- /dev/null[m
+[1m+++ b/pg.py[m
+[36m@@ -0,0 +1,45 @@[m
+[32m+[m[32mimport cv_19[m
+[32m+[m[32mimport city_cv_19[m
+[32m+[m[32mimport weather[m
+[32m+[m[32mimport weather2[m
+[32m+[m[32mfrom flask import Flask, render_template, request[m
+[32m+[m[32mfrom datetime import date,timedelta[m
+[32m+[m
+[32m+[m
+[32m+[m[32mapp = Flask(__name__)[m
+[32m+[m
+[32m+[m[32m@app.route('/')[m
+[32m+[m[32mdef index():[m
+[32m+[m[32m    key= request.args.get("keyword")[m
+[32m+[m[32m    if key=="-- 선택 --" or key is None:[m
+[32m+[m[32m        return render_template("index.html")[m
+[32m+[m[41m        [m
+[32m+[m[32m    else:[m[41m    [m
+[32m+[m[32m        today_1 = date.today()[m
+[32m+[m[32m        today = today_1.strftime("%Y%m%d")[m
+[32m+[m
+[32m+[m[32m        data1 = cv_19.get_cv_19_data(today,today)[m
+[32m+[m[32m        data2 = city_cv_19.get_city_cv_19_data(today,today)[m
+[32m+[m[32m        data3 = weather.get_weather_data(today,key)[m
+[32m+[m[32m        data4 = weather2.get_weather2_data(today,key)[m
+[32m+[m[41m      [m
+[32m+[m
+[32m+[m[32m        if not data1 or not data2:[m
+[32m+[m[32m            yesterday_1 = today_1 - timedelta(days=1)[m
+[32m+[m[32m            yesterday = yesterday_1.strftime("%Y%m%d")[m
+[32m+[m[41m            [m
+[32m+[m[32m            data1 = cv_19.get_cv_19_data(yesterday,yesterday)[m
+[32m+[m[32m            data2 = city_cv_19.get_city_cv_19_data(yesterday,yesterday)[m
+[32m+[m[32m            data3 = weather.get_weather_data(today,key)[m
+[32m+[m[32m            data4 = weather2.get_weather2_data(today,key)[m
+[32m+[m[41m            [m
+[32m+[m[41m            [m
+[32m+[m
+[32m+[m
+[32m+[m[32m        return render_template("index.html",data1=data1,data2=data2,data3=data3,data4=data4,city=key)[m[41m [m
+[32m+[m
+[32m+[m
+[32m+[m[32mif __name__ == "__main__":[m
+[32m+[m[32m    app.run(debug=True)[m
+[32m+[m
+[32m+[m
+[1mdiff --git a/requirements.txt b/requirements.txt[m
+[1mnew file mode 100644[m
+[1mindex 0000000..4f6a933[m
+[1m--- /dev/null[m
+[1m+++ b/requirements.txt[m
+[36m@@ -0,0 +1,39 @@[m
+[32m+[m[32maltgraph==0.17[m
+[32m+[m[32mappdirs==1.4.4[m
+[32m+[m[32mastroid==2.4.2[m
+[32m+[m[32mbeautifulsoup4==4.9.3[m
+[32m+[m[32mcertifi==2020.12.5[m
+[32m+[m[32mchardet==4.0.0[m
+[32m+[m[32mclick==7.1.2[m
+[32m+[m[32mcolorama==0.4.4[m
+[32m+[m[32mdistlib==0.3.1[m
+[32m+[m[32mfilelock==3.0.12[m
+[32m+[m[32mFlask==1.1.2[m
+[32m+[m[32mfuture==0.18.2[m
+[32m+[m[32mgunicorn==20.0.4[m
+[32m+[m[32midna==2.10[m
+[32m+[m[32misort==5.7.0[m
+[32m+[m[32mitsdangerous==1.1.0[m
+[32m+[m[32mJinja2==2.11.3[m
+[32m+[m[32mkeyboard==0.13.5[m
+[32m+[m[32mlazy-object-proxy==1.4.3[m
+[32m+[m[32mlxml==4.6.2[m
+[32m+[m[32mMarkupSafe==1.1.1[m
+[32m+[m[32mmccabe==0.6.1[m
+[32m+[m[32mpefile==2019.4.18[m
+[32m+[m[32mPillow==8.1.0[m
+[32m+[m[32mpygame==2.0.1[m
+[32m+[m[32mpyinstaller==4.2[m
+[32m+[m[32mpyinstaller-hooks-contrib==2020.11[m
+[32m+[m[32mpylint==2.6.0[m
+[32m+[m[32mpywin32-ctypes==0.2.0[m
+[32m+[m[32mrequests==2.25.1[m
+[32m+[m[32mselenium==3.141.0[m
+[32m+[m[32msix==1.15.0[m
+[32m+[m[32msoupsieve==2.1[m
+[32m+[m[32mtoml==0.10.2[m
+[32m+[m[32murllib3==1.26.2[m
+[32m+[m[32mvirtualenv==20.4.2[m
+[32m+[m[32mWerkzeug==1.0.1[m
+[32m+[m[32mwrapt==1.12.1[m
+[32m+[m[32mxmltodict==0.12.0[m
+[1mdiff --git a/runtime.txt b/runtime.txt[m
+[1mnew file mode 100644[m
+[1mindex 0000000..9118f64[m
+[1m--- /dev/null[m
+[1m+++ b/runtime.txt[m
+[36m@@ -0,0 +1 @@[m
+[32m+[m[32mPython-3.9.1[m
+\ No newline at end of file[m
+[1mdiff --git a/static/style.css b/static/style.css[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c13cd66[m
+[1m--- /dev/null[m
+[1m+++ b/static/style.css[m
+[36m@@ -0,0 +1,4 @@[m
+[32m+[m[32mh1{[m
+[32m+[m[32m    text-align: right;[m
+[32m+[m[32m}[m
+[32m+[m
+[1mdiff --git a/templates/index.html b/templates/index.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..669e218[m
+[1m--- /dev/null[m
+[1m+++ b/templates/index.html[m
+[36m@@ -0,0 +1,335 @@[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="ko">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta http-equiv="X-UA-Compatible" content="IE=edge">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <title>시작입니다.</title>[m
+[32m+[m[32m    <script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>[m
+[32m+[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<style>[m
+[32m+[m[32m    h1{[m
+[32m+[m[32m        text-align: center;[m
+[32m+[m[32m        margin-top: 60px;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    .city_lst{[m
+[32m+[m[32m        text-align: center;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    .cv_sum{[m
+[32m+[m[32m        text-align: center;[m
+[32m+[m[32m        margin-top: 15px;[m
+[32m+[m[41m        [m
+[32m+[m[32m    }[m
+[32m+[m[32m    .cv_city{[m
+[32m+[m[32m        text-align: center;[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[41m  [m
+[32m+[m[32m    }[m
+[32m+[m[32m    #result{[m
+[32m+[m[32m        color: blue;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    #add_cv_sum{[m
+[32m+[m[32m        color: red;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    #add_cv_city{[m
+[32m+[m[32m        color: red;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    .weather{[m
+[32m+[m[32m        text-align: center;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    .data_share{[m
+[32m+[m[32m        text-align: center;[m
+[32m+[m[32m        margin-top: 52px;[m
+[32m+[m[32m        margin-bottom: 180px;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    #producer{[m
+[32m+[m[32m    text-align: right;[m
+[32m+[m[32m    margin-top: 8%;[m
+[32m+[m[32m    margin-right: 5%;[m[41m  [m
+[32m+[m[32m    }[m
+[32m+[m[32m</style>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m    <section id="producer">[m
+[32m+[m[32m        <span>제작자 :</span>[m
+[32m+[m[32m        <a href="https://blog.naver.com/rladbtjq18" target="_blank">시작의 블로그</a>[m
+[32m+[m[32m    </section>[m
+[32m+[m[41m    [m
+[32m+[m[32m    <h1>안녕하세요 시작입니다.</h1>[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[32m    <form action="" class="city_lst">[m
+[32m+[m[32m        <label>원하는 지역을 선택해주세요.</label>[m
+[32m+[m[32m        <select name='keyword' size='1'>[m
+[32m+[m[32m            <option selected>-- 선택 --</option>[m
+[32m+[m[32m            <option>서울</option>[m
+[32m+[m[32m            <option>부산</option>[m
+[32m+[m[32m            <option>대구</option>[m
+[32m+[m[32m            <option>인천</option>[m
+[32m+[m[32m            <option>광주</option>[m
+[32m+[m[32m            <option>대전</option>[m
+[32m+[m[32m            <option>울산</option>[m
+[32m+[m[32m            <option>세종</option>[m
+[32m+[m[32m            <option>경기</option>[m
+[32m+[m[32m            <option>강원</option>[m
+[32m+[m[32m            <option>충북</option>[m
+[32m+[m[32m            <option>충남</option>[m
+[32m+[m[32m            <option>전북</option>[m
+[32m+[m[32m            <option>전남</option>[m
+[32m+[m[32m            <option>경북</option>[m
+[32m+[m[32m            <option>경남</option>[m
+[32m+[m[32m            <option>제주</option>[m
+[32m+[m[32m        </select>[m
+[32m+[m[32m        <button type="submit">입력</button>[m
+[32m+[m[32m    </form>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    <div class="cv_sum">[m
+[32m+[m[32m        {% if data1 %}[m
+[32m+[m[32m        <div><label for="">기준 날짜:</label>{{data1.stateDt}}</div>[m
+[32m+[m[32m        <div><label for="">확진자 수:</label>{{data1.decideCnt}}</div>[m
+[32m+[m[32m        <div><label for="">검사 중:</label>{{data1.examCnt}}</div>[m
+[32m+[m[32m        <div><label for="">격리 해제:</label>{{data1.clearCnt}}</div>[m
+[32m+[m[32m        <div><label for="">사망자:</label>{{data1.deathCnt}}</div><br>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m    <div class="cv_city">[m
+[32m+[m[41m        [m
+[32m+[m[32m        {% if data2 %}[m
+[32m+[m[32m        {% for a in data2 %}[m
+[32m+[m[41m     [m
+[32m+[m[32m        <div>[m
+[32m+[m[32m            {% if a.gubun == "합계" %}[m
+[32m+[m[32m            <div>지역 전체</div>[m
+[32m+[m[32m            <div id="add_cv_sum"><label for="">추가 확진자 :</label>{{a.incDec}}</div>[m
+[32m+[m[32m            <div><label for="">지역발생 :</label>{{a.localOccCnt}}</div>[m
+[32m+[m[32m            <div><label for="">해외유입 :</label>{{a.overFlowCnt}}</div>[m
+[32m+[m[32m            <div><label for="">치료중 :</label>{{a.isolIngCnt}}</div><br>[m
+[32m+[m[32m            {% endif %}[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <div id="result">[m
+[32m+[m
+[32m+[m[32m            {% if a.gubun == city %}[m
+[32m+[m[32m            <div>{{a.gubun}}</div>[m
+[32m+[m[32m            <div><label for="">총 확진자 :</label>{{a.defCnt}}</div>[m
+[32m+[m[32m            <div id="add_cv_city"><label for="">추가 확진자 :</label>{{a.incDec}}</div>[m
+[32m+[m[32m            <div><label for="">지역발생 :</label>{{a.localOccCnt}}</div>[m
+[32m+[m[32m            <div><label for="">해외유입 :</label>{{a.overFlowCnt}}</div>[m
+[32m+[m[32m            <div><label for="">치료중 :</label>{{a.isolIngCnt}}</div><br>[m
+[32m+[m[41m            [m
+[32m+[m[32m            {% endif %}[m
+[32m+[m[32m        </div>[m
+[32m+[m[41m            [m
+[32m+[m[41m            [m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m    </div>[m
+[32m+[m
+[32m+[m[32m    <div class="weather">[m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[32m        {% if data3 %}[m
+[32m+[m[41m        [m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "0"%}[m
+[32m+[m[32m        <label for=""></label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "1"%}[m
+[32m+[m[32m        <label for="">비가 옵니다.</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "2"%}[m
+[32m+[m[32m        <label for="">비와 눈이 섞여 옵니다.</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "3"%}[m
+[32m+[m[32m        <label for="">눈이 옵니다.</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "4"%}[m
+[32m+[m[32m        <label for="">소나기가 옵니다.</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "5"%}[m
+[32m+[m[32m        <label for="">빗방울이 떨어집니다.</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "6"%}[m
+[32m+[m[32m        <label for="">빗방울과 눈이 날립니다.</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "PTY" and b.fcstValue == "7"%}[m
+[32m+[m[32m        <label for="">눈이 날립니다.</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "SKY" and b.fcstValue == "1"%}[m
+[32m+[m[32m        <label for="">날씨 상태 : 맑음</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "SKY" and b.fcstValue == "3"%}[m
+[32m+[m[32m        <label for="">날씨 상태 : 구름많음</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "SKY" and b.fcstValue == "4"%}[m
+[32m+[m[32m        <label for="">날씨 상태 : 흐림</label>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m[41m        [m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "POP"%}[m
+[32m+[m[32m        <div><label for="">강수 확률 : </label>{{b.fcstValue}}%</div>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m[41m        [m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "TMX"%}[m
+[32m+[m[32m        <div><label for="">예상 최고 기온 : </label>{{b.fcstValue}}℃</div>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for b in data3 %}[m
+[32m+[m[32m        {% if b.category == "TMN"%}[m
+[32m+[m[32m        <div><label for="">예상 최저 기온 : </label>{{b.fcstValue}}℃</div>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m[32m        {% endif%}[m
+[32m+[m
+[32m+[m[32m        {% if data4 %}[m
+[32m+[m[41m        [m
+[32m+[m[32m        {% for c in data4 %}[m
+[32m+[m[32m        {% if c.category == "T1H"%}[m
+[32m+[m[32m        <div><label for="">현재 기온 : </label>{{c.obsrValue}}℃</div>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[32m        {% for c in data4 %}[m
+[32m+[m[32m        {% if c.category == "RN1"%}[m
+[32m+[m[32m        <div><label for="">강수량: </label>{{c.obsrValue}}mm</div>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m
+[32m+[m[41m     [m
+[32m+[m[32m        {% for c in data4 %}[m
+[32m+[m[32m        {% if c.category == "REH"%}[m
+[32m+[m[32m        <div><label for="">습도: </label>{{c.obsrValue}}%</div>[m
+[32m+[m[32m        {% endif %}[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m[41m        [m
+[32m+[m[32m        {% endif %}[m
+[32m+[m
+[32m+[m[32m    </div>[m
+[32m+[m
+[32m+[m[32m    <div class="data_share">[m
+[32m+[m[32m        <input type="button" onClick="cv_19();" value="코로나 정보 공유"/>[m
+[32m+[m[32m        <input type="button" onClick="weather();" value="날씨 정보 공유"/>[m
+[32m+[m[32m    </div>[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m
+[32m+[m[32m<script>[m
+[32m+[m[32mtry {[m
+[32m+[m[32m  function cv_19() {[m
+[32m+[m[32m    Kakao.init('e19172f855f11b7e072e8a75db28e973')[m
+[32m+[m[32m    Kakao.Link.sendDefault({[m
+[32m+[m[32m      objectType: 'feed',[m
+[32m+[m[32m      content: {[m
+[32m+[m[32m        title: '{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}\n추가 확진자 :{{a.incDec}}\n치료중 :{{a.isolIngCnt}}\n{% endif %}{% if a.gubun == "합계" %}전체 지역 추가 확진자 :{{a.incDec}}{% endif %}{% endfor %}{% endif %}',[m
+[32m+[m[32m        description: '',[m
+[32m+[m[32m        imageUrl:"",[m
+[32m+[m[32m        link: {[m
+[32m+[m[32m          mobileWebUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m          webUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m        },[m
+[32m+[m[32m      },[m
+[32m+[m[41m  [m
+[32m+[m[32m      buttons: [[m
+[32m+[m[32m        {[m
+[32m+[m[32m          title: '웹으로 보기',[m
+[32m+[m[32m          link: {[m
+[32m+[m[32m            mobileWebUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m            webUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m          },[m
+[32m+[m[32m        },[m
+[32m+[m[32m        {[m
+[32m+[m[32m          title: '앱으로 보기',[m
+[32m+[m[32m          link: {[m
+[32m+[m[32m            mobileWebUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m            webUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m          },[m
+[32m+[m[32m        },[m
+[32m+[m[32m      ],[m
+[32m+[m[32m    })[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function weather() {[m
+[32m+[m[32m    Kakao.init('e19172f855f11b7e072e8a75db28e973')[m
+[32m+[m[32m    Kakao.Link.sendDefault({[m
+[32m+[m[32m      objectType: 'feed',[m
+[32m+[m[32m      content: {[m
+[32m+[m[32m        title: '{% if data3 %}{% for b in data3 %}{% if b.category == "SKY" and b.fcstValue == "1"%}{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}{% endif %}{% endfor %}{% endif %} 날씨 상태 : 맑음\n{% endif %}{% endfor %}{% for b in data3 %}{% if b.category == "SKY" and b.fcstValue == "3"%}{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}{% endif %}{% endfor %}{% endif %} 날씨 상태 : 구름많음\n{% endif %}{% endfor %}{% for b in data3 %}{% if b.category == "SKY" and b.fcstValue == "4"%}{% if data2 %}{% for a in data2 %}{% if a.gubun == city %}{{a.gubun}}{% endif %}{% endfor %}{% endif %} 날씨 상태 : 흐림\n{% endif %}{% endfor %}{% for b in data3 %}{% if b.category == "POP"%}강수 확률 : {{b.fcstValue}}%\n{% endif %}{% endfor %}{% for b in data3 %}{% if b.category == "TMX"%}예상 최고 기온 : {{b.fcstValue}}℃\n{% endif %}{% endfor %}{% endif%}{% if data4 %}{% for c in data4 %}{% if c.category == "T1H"%}현재 기온 : {{c.obsrValue}}℃{% endif %}{% endfor %}{% endif %}',[m
+[32m+[m[32m        description: '',[m
+[32m+[m[32m        imageUrl:"",[m
+[32m+[m[32m        link: {[m
+[32m+[m[32m          mobileWebUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m          webUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m        },[m
+[32m+[m[32m      },[m
+[32m+[m[41m  [m
+[32m+[m[32m      buttons: [[m
+[32m+[m[32m        {[m
+[32m+[m[32m          title: '웹으로 보기',[m
+[32m+[m[32m          link: {[m
+[32m+[m[32m            mobileWebUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m            webUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m          },[m
+[32m+[m[32m        },[m
+[32m+[m[32m        {[m
+[32m+[m[32m          title: '앱으로 보기',[m
+[32m+[m[32m          link: {[m
+[32m+[m[32m            mobileWebUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m            webUrl: 'https://developers.kakao.com',[m
+[32m+[m[32m          },[m
+[32m+[m[32m        },[m
+[32m+[m[32m      ],[m
+[32m+[m[32m    })[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m; window.kakaoDemoCallback && window.kakaoDemoCallback() }[m
+[32m+[m[32mcatch(e) { window.kakaoDemoException && window.kakaoDemoException(e) }[m
+[32m+[m[32m</script>[m[41m [m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m[32m</body>[m
+[32m+[m[32m<!-- Copyright (c) 2021 by 기상청 (https://data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15057682) / CC BY -->[m
+[32m+[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/weather.py b/weather.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..145a8d9[m
+[1m--- /dev/null[m
+[1m+++ b/weather.py[m
+[36m@@ -0,0 +1,75 @@[m
+[32m+[m[32mimport requests ,xmltodict, json[m
+[32m+[m
+[32m+[m[32mdef get_weather_data(frist_date,key):[m
+[32m+[m[32m    time = 1100[m
+[32m+[m[32m    x = 55[m
+[32m+[m[32m    y = 124[m
+[32m+[m[32m    if key == "서울":[m
+[32m+[m[32m        x = 60[m
+[32m+[m[32m        y = 127[m
+[32m+[m[32m    if key == "부산":[m
+[32m+[m[32m        x = 98[m
+[32m+[m[32m        y = 76[m
+[32m+[m[32m    if key == "대구":[m
+[32m+[m[32m        x = 89[m
+[32m+[m[32m        y = 90[m
+[32m+[m[32m    if key == "인천":[m
+[32m+[m[32m        x = 55[m
+[32m+[m[32m        y = 124[m
+[32m+[m[32m    if key == "광주":[m
+[32m+[m[32m        x = 58[m
+[32m+[m[32m        y = 74[m
+[32m+[m[32m    if key == "대전":[m
+[32m+[m[32m        x = 67[m
+[32m+[m[32m        y = 100[m
+[32m+[m[32m    if key == "울산":[m
+[32m+[m[32m        x = 102[m
+[32m+[m[32m        y = 84[m
+[32m+[m[32m    if key == "세종":[m
+[32m+[m[32m        x = 66[m
+[32m+[m[32m        y = 103[m
+[32m+[m[32m    if key == "경기":[m
+[32m+[m[32m        x = 60[m
+[32m+[m[32m        y = 120[m
+[32m+[m[32m    if key == "강원":[m
+[32m+[m[32m        x = 73[m
+[32m+[m[32m        y = 134[m
+[32m+[m[32m    if key == "충북":[m
+[32m+[m[32m        x = 69[m
+[32m+[m[32m        y = 107[m
+[32m+[m[32m    if key == "충남":[m
+[32m+[m[32m        x = 68[m
+[32m+[m[32m        y = 100[m
+[32m+[m[32m    if key == "전북":[m
+[32m+[m[32m        x = 51[m
+[32m+[m[32m        y = 67[m
+[32m+[m[32m    if key == "전남":[m
+[32m+[m[32m        x = 63[m
+[32m+[m[32m        y = 89[m
+[32m+[m[32m    if key == "경북":[m
+[32m+[m[32m        x = 89[m
+[32m+[m[32m        y = 91[m
+[32m+[m[32m    if key == "경남":[m
+[32m+[m[32m        x = 91[m
+[32m+[m[32m        y = 77[m
+[32m+[m[32m    if key == "제주":[m
+[32m+[m[32m        x = 52[m
+[32m+[m[32m        y = 38[m
+[32m+[m[41m    [m
+[32m+[m[32m    url = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey=4GfH2i3tXiTAlgB1urJs7gd3SalAlH0w9dTp3ytpzhhhq8CcaYTF0rMwwVtATbZVLNUw1hLIc1as6IHBPxFvMA%3D%3D&numOfRows=10&pageNo=1&base_date={0}&base_time={1}&nx={2}&ny={3}".format(frist_date,time,x,y)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    res = requests.get(url)[m
+[32m+[m
+[32m+[m[32m    #xml을 dict형태로 변환[m
+[32m+[m[32m    data_change1 = xmltodict.parse(res.text)[m
+[32m+[m[32m    #dict형태를 json형태로 변환[m
+[32m+[m[32m    data_change2 = json.dumps(data_change1)[m
+[32m+[m[32m    # json을 dict 형태로 변환[m
+[32m+[m[32m    data_change3 = json.loads(data_change2)[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    weather_data =data_change3["response"]["body"]["items"]["item"][m
+[32m+[m
+[32m+[m[32m    return weather_data[m
+[1mdiff --git a/weather2.py b/weather2.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..b0c5020[m
+[1m--- /dev/null[m
+[1m+++ b/weather2.py[m
+[36m@@ -0,0 +1,75 @@[m
+[32m+[m[32mimport requests ,xmltodict, json[m
+[32m+[m
+[32m+[m[32mdef get_weather2_data(frist_date,key):[m
+[32m+[m[32m    time = 1100[m
+[32m+[m[32m    x = 55[m
+[32m+[m[32m    y = 124[m
+[32m+[m[32m    if key == "서울":[m
+[32m+[m[32m        x = 60[m
+[32m+[m[32m        y = 127[m
+[32m+[m[32m    if key == "부산":[m
+[32m+[m[32m        x = 98[m
+[32m+[m[32m        y = 76[m
+[32m+[m[32m    if key == "대구":[m
+[32m+[m[32m        x = 89[m
+[32m+[m[32m        y = 90[m
+[32m+[m[32m    if key == "인천":[m
+[32m+[m[32m        x = 55[m
+[32m+[m[32m        y = 124[m
+[32m+[m[32m    if key == "광주":[m
+[32m+[m[32m        x = 58[m
+[32m+[m[32m        y = 74[m
+[32m+[m[32m    if key == "대전":[m
+[32m+[m[32m        x = 67[m
+[32m+[m[32m        y = 100[m
+[32m+[m[32m    if key == "울산":[m
+[32m+[m[32m        x = 102[m
+[32m+[m[32m        y = 84[m
+[32m+[m[32m    if key == "세종":[m
+[32m+[m[32m        x = 66[m
+[32m+[m[32m        y = 103[m
+[32m+[m[32m    if key == "경기":[m
+[32m+[m[32m        x = 60[m
+[32m+[m[32m        y = 120[m
+[32m+[m[32m    if key == "강원":[m
+[32m+[m[32m        x = 73[m
+[32m+[m[32m        y = 134[m
+[32m+[m[32m    if key == "충북":[m
+[32m+[m[32m        x = 69[m
+[32m+[m[32m        y = 107[m
+[32m+[m[32m    if key == "충남":[m
+[32m+[m[32m        x = 68[m
+[32m+[m[32m        y = 100[m
+[32m+[m[32m    if key == "전북":[m
+[32m+[m[32m        x = 51[m
+[32m+[m[32m        y = 67[m
+[32m+[m[32m    if key == "전남":[m
+[32m+[m[32m        x = 63[m
+[32m+[m[32m        y = 89[m
+[32m+[m[32m    if key == "경북":[m
+[32m+[m[32m        x = 89[m
+[32m+[m[32m        y = 91[m
+[32m+[m[32m    if key == "경남":[m
+[32m+[m[32m        x = 91[m
+[32m+[m[32m        y = 77[m
+[32m+[m[32m    if key == "제주":[m
+[32m+[m[32m        x = 52[m
+[32m+[m[32m        y = 38[m
+[32m+[m[41m    [m
+[32m+[m[32m    url = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtNcst?serviceKey=4GfH2i3tXiTAlgB1urJs7gd3SalAlH0w9dTp3ytpzhhhq8CcaYTF0rMwwVtATbZVLNUw1hLIc1as6IHBPxFvMA%3D%3D&numOfRows=10&pageNo=1&base_date={0}&base_time={1}&nx={2}&ny={3}".format(frist_date,time,x,y)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    res = requests.get(url)[m
+[32m+[m
+[32m+[m[32m    #xml을 dict형태로 변환[m
+[32m+[m[32m    data_change1 = xmltodict.parse(res.text)[m
+[32m+[m[32m    #dict형태를 json형태로 변환[m
+[32m+[m[32m    data_change2 = json.dumps(data_change1)[m
+[32m+[m[32m    # json을 dict 형태로 변환[m
+[32m+[m[32m    data_change3 = json.loads(data_change2)[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    weather_data =data_change3["response"]["body"]["items"]["item"][m
+[32m+[m
+[32m+[m[32m    return weather_data[m
